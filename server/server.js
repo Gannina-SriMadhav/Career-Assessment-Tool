@@ -11,21 +11,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB Connected"))
 .catch((err) => console.log("MongoDB Error:", err));
 
-// API Routes
+// API routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/student', require('./routes/studentRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 
-
 // Serve React build
 app.use(express.static(path.join(__dirname, "dist")));
 
-app.get("/*", (req, res) => {
+// Catch-all route
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
